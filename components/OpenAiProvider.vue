@@ -92,7 +92,7 @@ defineExpose({
         role="status"
         aria-live="polite"
         :class="props.loadingClass"
-      >{{ props.loadingText ?? 'Loading ChatGPT App Bridge…' }}</p>
+      >{{ props.loadingText ?? 'Loading ChatGPT App SDK...' }}</p>
     </slot>
   </template>
 </template>
