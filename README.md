@@ -27,16 +27,16 @@ import { OpenAiProvider } from '@zacksmash/vue-open-ai-apps'
 </script>
 
 <template>
-        <template #loading>
-                <!-- loading the app -->
-        </template>
+    <template #loading>
+        <!-- loading the app -->
+    </template>
 
-        <!-- Default slot for your root app component -->
-        <App />
+    <!-- Default slot for your root app component -->
+    <App />
 
-        <template #error="{ message, retry }">
-            <!-- App was not loaded, retry or show error message -->
-        </template>
+    <template #error="{ message, retry }">
+        <!-- App was not loaded, retry or show error message -->
+    </template>
 </template>
 ```
 
