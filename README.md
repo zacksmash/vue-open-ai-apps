@@ -1,6 +1,7 @@
 # Open AI Apps SDK for Vue
 
-A set of composables for Vue to assist with using the OpenAI SDK window object.
+- A set of composables for Vue to assist with using the OpenAI SDK window object.
+- A `<OpenAiProvider />` component that wraps your app code and provides the `window.openai` object
 
 ```ts
 // Example usage
