@@ -87,7 +87,7 @@ export const SET_GLOBALS_EVENT_TYPE = "openai:set_globals";
 export class SetGlobalsEvent extends CustomEvent<{
 	globals: Partial<OpenAiGlobals>;
 }> {
-	readonly type: typeof SET_GLOBALS_EVENT_TYPE;
+	readonly type = SET_GLOBALS_EVENT_TYPE;
 }
 
 /**
