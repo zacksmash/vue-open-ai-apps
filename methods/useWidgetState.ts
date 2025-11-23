@@ -1,9 +1,9 @@
 import type { Ref } from "vue";
-import { useOpenAiGlobal } from "../properties/useOpenAiGlobal";
-import type { OpenAiGlobals, UnknownObject } from "../types";
+import { useOpenAIGlobal } from "../properties/useOpenAIGlobal";
+import type { OpenAIGlobals, UnknownObject } from "../types";
 
-export function useWidgetState<T extends OpenAiGlobals["widgetState"]>() {
-	const widgetState = useOpenAiGlobal("widgetState") as Ref<T | null>;
+export function useWidgetState<T extends OpenAIGlobals["widgetState"]>() {
+	const widgetState = useOpenAIGlobal("widgetState") as Ref<T | null>;
 
 	async function setWidgetState(next: T): Promise<void> {
 		if (

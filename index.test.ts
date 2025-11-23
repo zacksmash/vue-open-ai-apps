@@ -27,7 +27,7 @@ vi.mock("vue", () => {
 
 import { ref } from "vue";
 import { useCallTool } from "./methods/useCallTool";
-import { useOpenAiReady } from "./methods/useOpenAiReady";
+import { useOpenAIReady } from "./methods/useOpenAIReady";
 import { useOpenExternal } from "./methods/useOpenExternal";
 import { useRequestDisplayMode } from "./methods/useRequestDisplayMode";
 import { useRequestModal } from "./methods/useRequestModal";
@@ -36,7 +36,7 @@ import { useWidgetState } from "./methods/useWidgetState";
 import { useDisplayMode } from "./properties/useDisplayMode";
 import { useLocale } from "./properties/useLocale";
 import { useMaxHeight } from "./properties/useMaxHeight";
-import * as openAiGlobalModule from "./properties/useOpenAiGlobal";
+import * as openAIGlobalModule from "./properties/useOpenAIGlobal";
 import { useSafeArea } from "./properties/useSafeArea";
 import { useTheme } from "./properties/useTheme";
 import { useUserAgent } from "./properties/useUserAgent";
@@ -45,7 +45,7 @@ import { useWidgetParams } from "./properties/useWidgetParams";
 import { useWidgetProps } from "./properties/useWidgetProps";
 import {
 	type CallTool,
-	type OpenAiGlobals,
+	type OpenAIGlobals,
 	type RequestDisplayMode,
 	type RequestModal,
 	SET_GLOBALS_EVENT_TYPE,
@@ -58,14 +58,14 @@ declare global {
 	var __vueLifecycle: LifecycleQueues | undefined;
 }
 
-type DefaultOpenAiGlobals = OpenAiGlobals<
+type DefaultOpenAIGlobals = OpenAIGlobals<
 	UnknownObject,
 	UnknownObject,
 	UnknownObject,
 	UnknownObject
 >;
 
-type OpenAiApi = DefaultOpenAiGlobals & {
+type OpenAIApi = DefaultOpenAIGlobals & {
 	callTool: CallTool;
 	sendFollowUpMessage: (args: { prompt: string }) => Promise<void>;
 	openExternal: (payload: { href: string }) => void;
@@ -73,15 +73,15 @@ type OpenAiApi = DefaultOpenAiGlobals & {
 	requestModal: RequestModal;
 };
 
-type WindowWithOpenAi = Window &
+type WindowWithOpenAI = Window &
 	typeof globalThis & {
-		openai: OpenAiApi;
+		openai: OpenAIApi;
 	};
 
 const propertyCases: Array<{
 	name: string;
 	fn: () => unknown;
-	key: keyof DefaultOpenAiGlobals;
+	key: keyof DefaultOpenAIGlobals;
 }> = [
 	{ name: "useDisplayMode", fn: useDisplayMode, key: "displayMode" },
 	{ name: "useLocale", fn: useLocale, key: "locale" },
@@ -94,13 +94,13 @@ const propertyCases: Array<{
 	{ name: "useWidgetProps", fn: useWidgetProps, key: "toolOutput" },
 ];
 
-let windowStub: WindowWithOpenAi;
+let windowStub: WindowWithOpenAI;
 let originalWindow: typeof window;
 
 beforeEach(() => {
 	windowStub = createWindowStub();
 	originalWindow = globalThis.window;
-	(globalThis as typeof globalThis & { window: WindowWithOpenAi }).window =
+	(globalThis as typeof globalThis & { window: WindowWithOpenAI }).window =
 		windowStub;
 	resetLifecycle();
 });
@@ -181,8 +181,8 @@ describe("method helpers", () => {
 
 	it("useWidgetState updates refs and host state", async () => {
 		const widgetStateRef = ref<{ ready: boolean } | null>({ ready: false });
-		const openAiSpy = vi
-			.spyOn(openAiGlobalModule, "useOpenAiGlobal")
+		const openAISpy = vi
+			.spyOn(openAIGlobalModule, "useOpenAIGlobal")
 			.mockReturnValue(widgetStateRef as never);
 		const setStateMock = vi.fn().mockResolvedValue(undefined);
 		window.openai.setWidgetState = setStateMock;
@@ -196,13 +196,13 @@ describe("method helpers", () => {
 		expect(widgetState.value).toEqual({ ready: true });
 		expect(setStateMock).toHaveBeenCalledWith({ ready: true });
 
-		openAiSpy.mockRestore();
+		openAISpy.mockRestore();
 	});
 
 	it("useWidgetState is a no-op when host API is missing", async () => {
 		const widgetStateRef = ref<{ count: number } | null>(null);
-		const openAiSpy = vi
-			.spyOn(openAiGlobalModule, "useOpenAiGlobal")
+		const openAISpy = vi
+			.spyOn(openAIGlobalModule, "useOpenAIGlobal")
 			.mockReturnValue(widgetStateRef as never);
 		// @ts-expect-error - simulate missing host method
 		window.openai.setWidgetState = undefined;
@@ -212,13 +212,13 @@ describe("method helpers", () => {
 
 		expect(widgetStateRef.value).toBeNull();
 
-		openAiSpy.mockRestore();
+		openAISpy.mockRestore();
 	});
 
 	it("useWidgetState logs failures from host", async () => {
 		const widgetStateRef = ref<{ id: string } | null>(null);
-		const openAiSpy = vi
-			.spyOn(openAiGlobalModule, "useOpenAiGlobal")
+		const openAISpy = vi
+			.spyOn(openAIGlobalModule, "useOpenAIGlobal")
 			.mockReturnValue(widgetStateRef as never);
 		const error = new Error("fail");
 		const consoleSpy = vi
@@ -233,16 +233,16 @@ describe("method helpers", () => {
 		expect(widgetStateRef.value).toEqual({ id: "123" });
 		expect(consoleSpy).toHaveBeenCalledWith("setWidgetState failed", error);
 
-		openAiSpy.mockRestore();
+		openAISpy.mockRestore();
 	});
 });
 
 describe("property helpers", () => {
 	for (const { name, fn, key } of propertyCases) {
-		it(`${name} proxies to useOpenAiGlobal(${key})`, () => {
+		it(`${name} proxies to useOpenAIGlobal(${key})`, () => {
 			const stubRef = ref(null);
 			const spy = vi
-				.spyOn(openAiGlobalModule, "useOpenAiGlobal")
+				.spyOn(openAIGlobalModule, "useOpenAIGlobal")
 				.mockReturnValue(stubRef as never);
 
 			const result = fn();
@@ -255,18 +255,18 @@ describe("property helpers", () => {
 	}
 });
 
-describe("useOpenAiGlobal", () => {
+describe("useOpenAIGlobal", () => {
 	it("returns a ref seeded with the current global value", () => {
 		window.openai.locale = "fr";
 
-		const state = openAiGlobalModule.useOpenAiGlobal("locale");
+		const state = openAIGlobalModule.useOpenAIGlobal("locale");
 
 		expect(state.value).toBe("fr");
 	});
 
 	it("subscribes to global updates and refreshes the ref", () => {
 		window.openai.displayMode = "inline";
-		const state = openAiGlobalModule.useOpenAiGlobal("displayMode");
+		const state = openAIGlobalModule.useOpenAIGlobal("displayMode");
 		flushMounted();
 
 		window.openai.displayMode = "fullscreen";
@@ -281,7 +281,7 @@ describe("useOpenAiGlobal", () => {
 
 	it("ignores events that do not include the observed key", () => {
 		window.openai.locale = "en";
-		const state = openAiGlobalModule.useOpenAiGlobal("locale");
+		const state = openAIGlobalModule.useOpenAIGlobal("locale");
 		flushMounted();
 
 		window.dispatchEvent(
@@ -295,7 +295,7 @@ describe("useOpenAiGlobal", () => {
 
 	it("cleans up listeners on unmount", () => {
 		const removeSpy = vi.spyOn(window, "removeEventListener");
-		openAiGlobalModule.useOpenAiGlobal("locale");
+		openAIGlobalModule.useOpenAIGlobal("locale");
 		flushMounted();
 
 		flushBeforeUnmount();
@@ -307,9 +307,9 @@ describe("useOpenAiGlobal", () => {
 	});
 });
 
-describe("useOpenAiReady", () => {
+describe("useOpenAIReady", () => {
 	it("marks ready when the bridge already exists", async () => {
-		const hook = useOpenAiReady({
+		const hook = useOpenAIReady({
 			autoStart: false,
 			timeout: 50,
 			pollingInterval: 0,
@@ -322,7 +322,7 @@ describe("useOpenAiReady", () => {
 	it("surfaces timeout errors when the bridge is missing", async () => {
 		// @ts-expect-error - simulate unavailable callTool API
 		window.openai.callTool = undefined;
-		const hook = useOpenAiReady({
+		const hook = useOpenAIReady({
 			autoStart: false,
 			timeout: 5,
 			pollingInterval: 0,
@@ -335,7 +335,7 @@ describe("useOpenAiReady", () => {
 	it("recovers once the bridge becomes available", async () => {
 		// @ts-expect-error - simulate unavailable callTool API
 		window.openai.callTool = undefined;
-		const hook = useOpenAiReady({
+		const hook = useOpenAIReady({
 			autoStart: false,
 			timeout: 50,
 			pollingInterval: 0,
@@ -377,10 +377,10 @@ function resetLifecycle() {
 }
 
 function createWindowStub(
-	overrides: Partial<OpenAiApi> = {},
-): WindowWithOpenAi {
-	const target = new EventTarget() as WindowWithOpenAi;
-	target.openai = buildOpenAiStub(overrides);
+	overrides: Partial<OpenAIApi> = {},
+): WindowWithOpenAI {
+	const target = new EventTarget() as WindowWithOpenAI;
+	target.openai = buildOpenAIStub(overrides);
 	target.setTimeout = globalThis.setTimeout.bind(globalThis);
 	target.clearTimeout = globalThis.clearTimeout.bind(globalThis);
 	target.requestAnimationFrame = ((cb: FrameRequestCallback) => {
@@ -393,8 +393,8 @@ function createWindowStub(
 	return target;
 }
 
-function buildOpenAiStub(overrides: Partial<OpenAiApi> = {}): OpenAiApi {
-	const base: OpenAiApi = {
+function buildOpenAIStub(overrides: Partial<OpenAIApi> = {}): OpenAIApi {
+	const base: OpenAIApi = {
 		callTool: vi.fn<CallTool>(async () => ({ result: "ok" })),
 		sendFollowUpMessage: vi.fn<(args: { prompt: string }) => Promise<void>>(
 			async () => undefined,
@@ -418,7 +418,7 @@ function buildOpenAiStub(overrides: Partial<OpenAiApi> = {}): OpenAiApi {
 		toolResponseMetadata: null,
 		widgetState: null,
 		setWidgetState: vi.fn<
-			(state: DefaultOpenAiGlobals["widgetState"]) => Promise<void>
+			(state: DefaultOpenAIGlobals["widgetState"]) => Promise<void>
 		>(async () => undefined),
 	};
 

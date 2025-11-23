@@ -1,6 +1,6 @@
 import type { ExtractPropTypes } from "vue";
 
-export const openAiProviderProps = {
+export const openAIProviderProps = {
 	timeout: {
 		type: Number,
 		default: 15_000,
@@ -21,9 +21,9 @@ export const openAiProviderProps = {
 	errorClass: String,
 } satisfies Record<string, unknown>;
 
-export type OpenAiProviderProps = ExtractPropTypes<typeof openAiProviderProps>;
+export type OpenAIProviderProps = ExtractPropTypes<typeof openAIProviderProps>;
 
-export type OpenAiProviderEmits = {
+export type OpenAIProviderEmits = {
 	(event: "ready", payload: { duration: number }): void;
 	(event: "loading", payload: { retry: () => Promise<void> }): void;
 	(

@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
-import { useOpenAiGlobal } from "./useOpenAiGlobal";
+import { useOpenAIGlobal } from "./useOpenAIGlobal";
 
 export const useLocale = (): Ref<string | null> => {
-	return useOpenAiGlobal("locale");
+	return useOpenAIGlobal("locale");
 };

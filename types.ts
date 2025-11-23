@@ -1,4 +1,4 @@
-export type OpenAiGlobals<
+export type OpenAIGlobals<
 	ToolInput = UnknownObject,
 	ToolOutput = UnknownObject,
 	ToolResponseMetadata = UnknownObject,
@@ -85,7 +85,7 @@ export type CallTool = (
 /** Extra events */
 export const SET_GLOBALS_EVENT_TYPE = "openai:set_globals";
 export class SetGlobalsEvent extends CustomEvent<{
-	globals: Partial<OpenAiGlobals>;
+	globals: Partial<OpenAIGlobals>;
 }> {
 	readonly type = SET_GLOBALS_EVENT_TYPE;
 }
@@ -95,7 +95,7 @@ export class SetGlobalsEvent extends CustomEvent<{
  */
 declare global {
 	interface Window {
-		openai: API & OpenAiGlobals;
+		openai: API & OpenAIGlobals;
 	}
 
 	interface WindowEventMap {

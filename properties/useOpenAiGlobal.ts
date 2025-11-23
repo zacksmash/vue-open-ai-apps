@@ -1,18 +1,18 @@
 import { onBeforeUnmount, onMounted, type Ref, ref } from "vue";
 import {
-	type OpenAiGlobals,
+	type OpenAIGlobals,
 	SET_GLOBALS_EVENT_TYPE,
 	type SetGlobalsEvent,
 } from "../types";
 
-export function useOpenAiGlobal<K extends keyof OpenAiGlobals>(
+export function useOpenAIGlobal<K extends keyof OpenAIGlobals>(
 	key: K,
-): Ref<OpenAiGlobals[K]> {
-	const state = ref((window.openai as OpenAiGlobals)[key]);
+): Ref<OpenAIGlobals[K]> {
+	const state = ref((window.openai as OpenAIGlobals)[key]);
 
 	const onChange = () => {
 		state.value =
-			typeof window !== "undefined" && (window.openai as OpenAiGlobals)[key];
+			typeof window !== "undefined" && (window.openai as OpenAIGlobals)[key];
 	};
 
 	let handleSetGlobal: ((event: SetGlobalsEvent) => void) | null = null;
@@ -38,5 +38,5 @@ export function useOpenAiGlobal<K extends keyof OpenAiGlobals>(
 		}
 	});
 
-	return state as Ref<OpenAiGlobals[K]>;
+	return state as Ref<OpenAIGlobals[K]>;
 }

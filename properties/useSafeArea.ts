@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
 import type { SafeArea } from "../types";
-import { useOpenAiGlobal } from "./useOpenAiGlobal";
+import { useOpenAIGlobal } from "./useOpenAIGlobal";
 
 export const useSafeArea = (): Ref<SafeArea | null> => {
-	return useOpenAiGlobal("safeArea");
+	return useOpenAIGlobal("safeArea");
 };

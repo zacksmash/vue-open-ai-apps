@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
-import { useOpenAiGlobal } from "./useOpenAiGlobal";
+import { useOpenAIGlobal } from "./useOpenAIGlobal";
 
 export const useWidgetMeta = <T extends Ref<Record<string, unknown>>>(): T => {
-	return useOpenAiGlobal("toolResponseMetadata") as T;
+	return useOpenAIGlobal("toolResponseMetadata") as T;
 };

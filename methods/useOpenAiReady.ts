@@ -1,14 +1,14 @@
 import "../types";
 import { onBeforeUnmount, onMounted, type Ref, ref } from "vue";
 
-export type UseOpenAiReadyOptions = {
+export type UseOpenAIReadyOptions = {
 	timeout?: number;
 	windowObject?: string;
 	pollingInterval?: number;
 	autoStart?: boolean;
 };
 
-export type UseOpenAiReadyReturn = {
+export type UseOpenAIReadyReturn = {
 	ready: Ref<boolean>;
 	errorMessage: Ref<string | null>;
 	lastError: Ref<unknown>;
@@ -21,9 +21,9 @@ export type UseOpenAiReadyReturn = {
 const DEFAULT_TIMEOUT = 15_000;
 const DEFAULT_INTERVAL = 16;
 
-export function useOpenAiReady(
-	options: UseOpenAiReadyOptions = {},
-): UseOpenAiReadyReturn {
+export function useOpenAIReady(
+	options: UseOpenAIReadyOptions = {},
+): UseOpenAIReadyReturn {
 	const ready = ref(false);
 	const errorMessage = ref<string | null>(null);
 	const lastError = ref<unknown>(null);

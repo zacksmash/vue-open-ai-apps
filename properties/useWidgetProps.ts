@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
-import { useOpenAiGlobal } from "./useOpenAiGlobal";
+import { useOpenAIGlobal } from "./useOpenAIGlobal";
 
 export const useWidgetProps = <T extends Ref<Record<string, unknown>>>(): T => {
-	return useOpenAiGlobal("toolOutput") as T;
+	return useOpenAIGlobal("toolOutput") as T;
 };

@@ -1,28 +1,28 @@
 <script lang="ts" setup>
 import "../../types";
 import { watch } from "vue";
-import { useOpenAiReady } from "../../methods/useOpenAiReady";
+import { useOpenAIReady } from "../../methods/useOpenAIReady";
 import {
-	type OpenAiProviderEmits,
-	openAiProviderProps,
+	type OpenAIProviderEmits,
+	openAIProviderProps,
 } from "./types";
 
-const props = defineProps(openAiProviderProps);
+const props = defineProps(openAIProviderProps);
 
-const emit = defineEmits<OpenAiProviderEmits>();
+const emit = defineEmits<OpenAIProviderEmits>();
 
-const bridge = useOpenAiReady({
+const bridge = useOpenAIReady({
 	timeout: props.timeout,
 	windowObject: props.windowObject,
 	pollingInterval: props.pollingInterval,
 	autoStart: props.autoStart,
 });
 
-const startOpenAiRequest = () => bridge.start();
+const startOpenAIRequest = () => bridge.start();
 
 watch(() => bridge.isLoading.value, (isLoading) => {
 		if (isLoading) {
-			emit("loading", { retry: startOpenAiRequest });
+			emit("loading", { retry: startOpenAIRequest });
 		}
 	},
 	{ immediate: true },
@@ -40,7 +40,7 @@ watch(() => bridge.errorMessage.value, (message) => {
 		if (message) {
 			emit("error", {
 				message,
-				retry: startOpenAiRequest,
+				retry: startOpenAIRequest,
 				cause: bridge.lastError.value ?? undefined,
 			});
 		}
@@ -52,7 +52,7 @@ defineExpose({
 	ready: bridge.ready,
 	error: bridge.errorMessage,
 	isLoading: bridge.isLoading,
-	retry: startOpenAiRequest,
+	retry: startOpenAIRequest,
 });
 </script>
 
@@ -61,7 +61,7 @@ defineExpose({
     <slot
       name="error"
       :message="bridge.errorMessage.value"
-      :retry="startOpenAiRequest"
+      :retry="startOpenAIRequest"
     >
       <div
         class="openai-provider__error"
@@ -75,7 +75,7 @@ defineExpose({
         <button
           type="button"
           class="openai-provider__retry"
-          @click="startOpenAiRequest"
+          @click="startOpenAIRequest"
         >{{ props.retryLabel ?? 'Retry' }}</button>
       </div>
     </slot>
