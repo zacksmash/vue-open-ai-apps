@@ -13,3 +13,22 @@ const onRequestDisplayMode = async () => {
     await requestDisplayMode("fullscreen");
 };
 ``
+
+```vue
+<script setup>
+import { OpenAiProvider } from '@zacksmash/vue-open-ai-apps'
+</script>
+
+<template>
+    <template #loading>
+        <!-- loading the app -->
+    </template>
+
+    <!-- Default slot for your root app component -->
+    <App />
+
+    <template #error="{ message, retry }">
+      <!-- App was not loaded, retry or show error message -->
+    </template>
+</template>
+```
