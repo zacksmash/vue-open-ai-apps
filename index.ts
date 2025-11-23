@@ -1,5 +1,6 @@
 import OpenAiProvider from "./components/OpenAiProvider.vue";
 import { useCallTool } from "./methods/useCallTool";
+import { useOpenAiReady } from "./methods/useOpenAiReady";
 import { useOpenExternal } from "./methods/useOpenExternal";
 import { useRequestDisplayMode } from "./methods/useRequestDisplayMode";
 import { useRequestModal } from "./methods/useRequestModal";
@@ -23,6 +24,7 @@ export {
 	useLocale,
 	useMaxHeight,
 	useOpenAiGlobal,
+	useOpenAiReady,
 	useOpenExternal,
 	useRequestDisplayMode,
 	useRequestModal,
@@ -35,3 +37,8 @@ export {
 	useWidgetProps,
 	useWidgetState,
 };
+
+export type {
+	OpenAiProviderEmits,
+	OpenAiProviderProps,
+} from "./components/OpenAiProvider.types";

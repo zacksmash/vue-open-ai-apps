@@ -27,6 +27,7 @@ vi.mock("vue", () => {
 
 import { ref } from "vue";
 import { useCallTool } from "./methods/useCallTool";
+import { useOpenAiReady } from "./methods/useOpenAiReady";
 import { useOpenExternal } from "./methods/useOpenExternal";
 import { useRequestDisplayMode } from "./methods/useRequestDisplayMode";
 import { useRequestModal } from "./methods/useRequestModal";
@@ -94,15 +95,19 @@ const propertyCases: Array<{
 ];
 
 let windowStub: WindowWithOpenAi;
+let originalWindow: typeof window;
 
 beforeEach(() => {
 	windowStub = createWindowStub();
-	vi.stubGlobal("window", windowStub);
+	originalWindow = globalThis.window;
+	(globalThis as typeof globalThis & { window: WindowWithOpenAi }).window =
+		windowStub;
 	resetLifecycle();
 });
 
 afterEach(() => {
-	vi.unstubAllGlobals();
+	(globalThis as typeof globalThis & { window: Window | undefined }).window =
+		originalWindow;
 	vi.restoreAllMocks();
 	resetLifecycle();
 });
@@ -302,6 +307,52 @@ describe("useOpenAiGlobal", () => {
 	});
 });
 
+describe("useOpenAiReady", () => {
+	it("marks ready when the bridge already exists", async () => {
+		const hook = useOpenAiReady({
+			autoStart: false,
+			timeout: 50,
+			pollingInterval: 0,
+		});
+		await hook.start();
+		expect(hook.ready.value).toBe(true);
+		expect(hook.errorMessage.value).toBeNull();
+	});
+
+	it("surfaces timeout errors when the bridge is missing", async () => {
+		// @ts-expect-error - simulate unavailable callTool API
+		window.openai.callTool = undefined;
+		const hook = useOpenAiReady({
+			autoStart: false,
+			timeout: 5,
+			pollingInterval: 0,
+		});
+		await hook.start();
+		expect(hook.ready.value).toBe(false);
+		expect(hook.errorMessage.value).toBe("OpenAI SDK timeout");
+	});
+
+	it("recovers once the bridge becomes available", async () => {
+		// @ts-expect-error - simulate unavailable callTool API
+		window.openai.callTool = undefined;
+		const hook = useOpenAiReady({
+			autoStart: false,
+			timeout: 50,
+			pollingInterval: 0,
+		});
+
+		setTimeout(() => {
+			window.openai.callTool = vi
+				.fn(async () => ({ result: "ok" }))
+				.bind(window.openai) as typeof window.openai.callTool;
+		}, 0);
+
+		await hook.start();
+		expect(hook.ready.value).toBe(true);
+		expect(hook.errorMessage.value).toBeNull();
+	});
+});
+
 function flushMounted() {
 	const lifecycle = globalThis.__vueLifecycle;
 	if (!lifecycle) return;
@@ -330,6 +381,15 @@ function createWindowStub(
 ): WindowWithOpenAi {
 	const target = new EventTarget() as WindowWithOpenAi;
 	target.openai = buildOpenAiStub(overrides);
+	target.setTimeout = globalThis.setTimeout.bind(globalThis);
+	target.clearTimeout = globalThis.clearTimeout.bind(globalThis);
+	target.requestAnimationFrame = ((cb: FrameRequestCallback) => {
+		const handle = globalThis.setTimeout(() => cb(Date.now()), 16);
+		return handle as unknown as number;
+	}) as typeof window.requestAnimationFrame;
+	target.cancelAnimationFrame = (handle: number) => {
+		globalThis.clearTimeout(handle as unknown as number);
+	};
 	return target;
 }
 
