@@ -1,4 +1,4 @@
-import OpenAiProvider from "./components/OpenAiProvider.vue";
+import OpenAiProvider from "./components/OpenAiProvider/index.vue";
 import { useCallTool } from "./methods/useCallTool";
 import { useOpenAiReady } from "./methods/useOpenAiReady";
 import { useOpenExternal } from "./methods/useOpenExternal";
@@ -41,4 +41,4 @@ export {
 export type {
 	OpenAiProviderEmits,
 	OpenAiProviderProps,
-} from "./components/OpenAiProvider.types";
+} from "./components/OpenAiProvider/types";

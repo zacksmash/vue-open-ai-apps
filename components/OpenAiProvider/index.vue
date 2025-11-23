@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import "../types";
+import "../../types";
 import { watch } from "vue";
-import { useOpenAiReady } from "../methods/useOpenAiReady";
+import { useOpenAiReady } from "../../methods/useOpenAiReady";
 import {
 	type OpenAiProviderEmits,
 	openAiProviderProps,
-} from "./OpenAiProvider.types";
+} from "./types";
 
 const props = defineProps(openAiProviderProps);
 
