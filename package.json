@@ -1,0 +1,35 @@
+{
+	"name": "vue-open-ai-apps",
+	"version": "1.0.0",
+	"description": "Open AI Apps SDK helpers for Vue",
+	"main": "index.ts",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:zacksmash/vue-open-ai-apps.git"
+	},
+	"scripts": {
+		"test": "vitest run index.test.ts",
+		"biome:fix": "biome format --write",
+		"biome:check": "biome check"
+	},
+	"keywords": [
+		"Open",
+		"AI",
+		"Apps",
+		"SDK",
+		"Vue"
+	],
+	"author": "Zack Warren",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/zacksmash/vue-open-ai-apps/issues"
+	},
+	"homepage": "https://github.com/zacksmash/vue-open-ai-apps#readme",
+	"devDependencies": {
+		"@biomejs/biome": "2.3.7",
+		"vitest": "^4.0.13"
+	},
+	"dependencies": {
+		"vue": "^3.5.24"
+	}
+}
