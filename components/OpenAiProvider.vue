@@ -9,7 +9,7 @@ let running = false;
 const TIMEOUT_MS = 15000;
 
 function openAiIsAvailable() {
-  const globalObject = window.openai;
+  const globalObject = window.openaix;
   return !!(globalObject && typeof globalObject.callTool === 'function');
 }
 
@@ -68,9 +68,7 @@ onMounted(startOpenAiRequest);
 
   <template v-else>
     <slot name="loading">
-      <p>
-        Loading ChatGPT App Bridge…
-      </p>
+      <p>Loading ChatGPT App Bridge…</p>
     </slot>
   </template>
 </template>
