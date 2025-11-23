@@ -1,5 +1,11 @@
 # Open AI Apps SDK for Vue
 
+## Installation
+```bash
+npm i @zacksmash/vue-open-ai-apps
+```
+
+## Composables
 A set of composables and UI helpers for Vue to assist with using the OpenAI SDK window object.
 ```ts
 // Example usage
