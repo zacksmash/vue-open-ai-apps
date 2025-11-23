@@ -9,7 +9,7 @@ let running = false;
 const TIMEOUT_MS = 15000;
 
 function openAiIsAvailable() {
-  const globalObject = window.openaix;
+  const globalObject = window.openai;
   return !!(globalObject && typeof globalObject.callTool === 'function');
 }
 
