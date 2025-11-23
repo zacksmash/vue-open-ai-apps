@@ -1,6 +1,6 @@
 {
 	"name": "@zacksmash/vue-open-ai-apps",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "Open AI Apps SDK helpers for Vue",
 	"main": "index.ts",
 	"repository": {
